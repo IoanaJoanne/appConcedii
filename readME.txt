@@ -1,1 +1,1 @@
-App gestionare zile libere: zile de concedii, concediu medical, work from home etc
+App gestionare zile libere: zile de concedii, concediu medical, work from home.
