@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+ <meta charset="UTF-8" />
+ <title> Calendar</title>
+<!-- the skeleton framework similar to bootstrap -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
+</head>
+<body>
+	<div id="myPage" class="container">
+		<div class="row">
+			<div class="twelve columns">
+			<!-- this is skeleton grid system -->
+				<h3>Calendar displayed company-wide.</h3>
+				<br>
+				<ul>
+				<li v-for = "leave in leaves">
+				<p>Type: {{ leave.type}} </p> 
+				<p>Start date: {{ leave.startDate}} </p> 
+				<p>End date: {{ leave.endDate}} </p> 
+				<p>Employee name: {{ leave.employee.name}} </p> 
+				</li>
+				</ul>
+				
+			</div>
+
+		</div>
+	</div>
+
+</body>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://vuejs.org/js/vue.js"></script>
+<script>
+var app = new Vue({
+	  el: '#myPage',
+	  data: {leaves:[]},
+	  mounted(){
+		  /* mounted means that the method fetchLeavesList is invoked once the app is ready */
+          this.fetchLeavesList();
+      },
+      
+      methods: {
+    	  fetchLeavesList(){
+    		  //axios makes the request to the rest api, binds the vue data to the rest data
+              axios.get("/companyLeaves").then(function(response){
+                  this.leaves = response.data;
+              }.bind(this));
+          }
+      }
+      
+	})
+
+
+
+</script>
+</html>
