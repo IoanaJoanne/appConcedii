@@ -5,8 +5,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
@@ -21,22 +23,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	 	@Override
 	 	protected void configure(HttpSecurity http) throws Exception {
-	 		http.authorizeRequests()
-	 		.antMatchers("/account/employee/**").hasRole("USER").and()
-	 				
-	 				.formLogin();
-	 		http.authorizeRequests()
-	 		.antMatchers("/companyLeaves").hasRole("USER").and()
-	 				
-	 				.formLogin();
-	 		http.authorizeRequests()
-	 		.antMatchers("/companyLeaves").hasRole("ADMIN").and()
-	 				
-	 				.formLogin();
-	 		http.authorizeRequests()
-	 		.antMatchers("/account/manager/**").hasRole("ADMIN").and()
-	 				
-	 				.formLogin();
+	 		
+	 		http .csrf().disable()
+	 		.authorizeRequests()
+	 		.antMatchers("/account/manager/**").authenticated()
+	 		.antMatchers("/account/manager/**").hasRole("ADMIN")
+	 		.antMatchers("/account/employee/**").authenticated()
+	 		.antMatchers("/account/employee/**").hasRole("USER")
+	 		.antMatchers("/companyLeaves/**").authenticated()
+	 		.and()	
+	 		.httpBasic()
+	 		.and()
+	        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	 		
+	 		
 	 	}
 
 	 	@Override

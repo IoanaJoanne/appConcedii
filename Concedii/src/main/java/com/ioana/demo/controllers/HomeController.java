@@ -17,22 +17,25 @@ import com.ioana.demo.models.LeaveType;
 @RestController
 public class HomeController {
 	
+	public static List<LeaveRequest> lista;
+	static {
+		 lista = new ArrayList<>();
+			
+			Employee e1 = new Employee("kiki");
+			Employee e2 = new Employee("miki");
+			
+			LeaveRequest l1 = new LeaveRequest(LeaveType.holiday, new Date("02/09/2018"), new Date("12/09/2018"),LeaveStatus.approved,e1);
+			LeaveRequest l2 = new LeaveRequest(LeaveType.sick_leave, new Date("03/09/2018"), new Date("05/09/2018"),LeaveStatus.approved,e2);
+			
+			lista.add(l1);
+			lista.add(l2);
+		
+	}
 	
 @RequestMapping(value = "/companyLeaves", method = RequestMethod.GET)
 public List<LeaveRequest> showLeavesCompanyWide()
 {
-	List<LeaveRequest> lista = new ArrayList<>();
-	
-	Employee e1 = new Employee("kiki");
-	Employee e2 = new Employee("miki");
-	
-	LeaveRequest l1 = new LeaveRequest(LeaveType.holiday, new Date("02/09/2018"), new Date("12/09/2018"),LeaveStatus.approved,e1);
-	LeaveRequest l2 = new LeaveRequest(LeaveType.sick_leave, new Date("03/09/2018"), new Date("05/09/2018"),LeaveStatus.approved,e2);
-	
-	lista.add(l1);
-	lista.add(l2);
-	
-	
+
 	return lista;
 	
 
