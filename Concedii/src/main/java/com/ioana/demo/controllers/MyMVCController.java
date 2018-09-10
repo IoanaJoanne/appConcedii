@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class MVCController {
+public class MyMVCController {
 	// spring MVC
 		@RequestMapping(value = "/register", method = RequestMethod.GET)
 		public String displayRegisterForm() {

@@ -15,7 +15,7 @@ import com.ioana.demo.models.LeaveStatus;
 import com.ioana.demo.models.LeaveType;
 
 @RestController
-public class FirstRESTController {
+public class MyRESTController {
 
 	public static List<LeaveRequest> lista;
 	static {

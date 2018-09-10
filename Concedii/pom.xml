@@ -25,6 +25,7 @@
 		<java.version>1.8</java.version>
 	</properties>
 
+	<!-- adaugata automat atunci cand bifezi web -->
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -37,7 +38,9 @@
 			<scope>test</scope>
 		</dependency>
 
-
+		<!-- cele de deasupra au fost puse automat la crearea proiectului cand 
+			am ales web -->
+		<!-- the below dependencies were added later pe parcurs -->
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -53,6 +56,31 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 			<version>2.0.4.RELEASE</version>
 		</dependency>
+		<!-- for data jpa -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- in-memory database- dc nu adaug asta, doar cu jpa nu merge app-ul 
+			sa porneasca -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+	<!-- needed for Authorization server and auth2 configurations -->
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+			<version>2.1.0.RELEASE</version>
+		</dependency>
+
+
+
+
+
+
 
 	</dependencies>
 
