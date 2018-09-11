@@ -54,9 +54,13 @@ public class MyRESTController {
 		return "Welcome manager " + username + " !";
 	}
 
-	@RequestMapping(value = "/start", method = RequestMethod.GET)
-	public String login() {
-		return "home page";
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public String test() {
+		return "test message: this rest url is not secured with security mechanism";
+	}
+	@RequestMapping(value = "/notSignedIn", method = RequestMethod.GET)
+	public String displayMessage() {
+		return "You need to authenticate first to access the content of this page.";
 	}
 
 }

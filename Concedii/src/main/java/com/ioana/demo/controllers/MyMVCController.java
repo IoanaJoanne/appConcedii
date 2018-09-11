@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MyMVCController {
 	// spring MVC
-		@RequestMapping(value = "/register", method = RequestMethod.GET)
+		@RequestMapping(value = "/signin", method = RequestMethod.GET)
 		public String displayRegisterForm() {
 
-			return "register";
+			return "signinPage";
 		}
 
 		@RequestMapping(value = "/CompanyCalendar", method = RequestMethod.GET)

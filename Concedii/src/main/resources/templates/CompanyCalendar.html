@@ -13,6 +13,8 @@
 			<!-- this is skeleton grid system -->
 				<h3>Calendar displayed company-wide.</h3>
 				<br>
+				{{ signInRequired }}
+				<br>
 				<ul>
 				<li v-for = "leave in leaves">
 				<p>Type: {{ leave.type}} </p> 
@@ -32,9 +34,19 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://vuejs.org/js/vue.js"></script>
 <script>
+function getCookie(name) {
+	  var value = "; " + document.cookie;
+	  var parts = value.split("; " + name + "=");
+	  if (parts.length == 2) return parts.pop().split(";").shift();
+	}
+
+</script>
+<script>
 var app = new Vue({
 	  el: '#myPage',
-	  data: {leaves:[]},
+	  data: {leaves:[], 
+	  signInRequired: '' 
+	  },
 	  mounted(){
 		  /* mounted means that the method fetchLeavesList is invoked once the app is ready */
           this.fetchLeavesList();
@@ -43,11 +55,33 @@ var app = new Vue({
       methods: {
     	  fetchLeavesList(){
     		  //axios makes the request to the rest api, binds the vue data to the rest data
-              axios.get("/companyLeaves").then(function(response){
+    		  if(getCookie("access_token"))
+    		  {
+    			  axios({
+                      method:'get',
+                      url:'/companyLeaves',
+                      headers: {'Authorization': "bearer " + getCookie("access_token")}
+                    
+                  }) 
+              .then(function(response){
                   this.leaves = response.data;
               }.bind(this));
+              
+    		  }
+    		  else
+    			  { 
+    			  
+    			  axios.get('/notSignedIn')
+    			  .then(function(response){
+                      this.signInRequired = response.data;
+                  }.bind(this)); 
+    			  }
+    		  
+    			  }
+    		  
           }
-      }
+    	  
+      
       
 	})
 

@@ -22,9 +22,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
             .disable()
             .and()
         .authorizeRequests()
-        .antMatchers("/start", "/signin").permitAll()
-        //aici pun toate url urile rest care vreau sa mi fie permise
-        .antMatchers("/").permitAll()
+        .antMatchers("/test", "/notSignedIn", "/signin", "/register", "/CompanyCalendar").permitAll()
+        //view-urile populate cu date din rest api, adica url urile mvc nu s restrictionate
+        //pt ca rest api-urile apelate de ele sunt restrictionate: ori afiseaza datele din rest api ori afiseaza mesajul tre sa te loghezi
+        //singurul rest api nerestrictionat e cel de test si notSignedIn
+        //aici am pus toate url urile rest si mvc  care vreau sa mi fie permise
+       
                    .anyRequest().authenticated();
 	}
 	
