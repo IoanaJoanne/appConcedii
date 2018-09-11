@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ioana.demo.auth2.DB.entities.User;
-import com.ioana.demo.auth2.DB.repositories.UserRepository;
+import com.ioana.demo.auth2.DB.repositories.MyUserRepository;
 
 
 //THIS IS STEP 9
@@ -13,7 +13,7 @@ import com.ioana.demo.auth2.DB.repositories.UserRepository;
 public class MyUserService {
 
 	@Autowired
-    private UserRepository repo;
+    private MyUserRepository repo;
 
     @Autowired
     private PasswordEncoder passwordEncoder;

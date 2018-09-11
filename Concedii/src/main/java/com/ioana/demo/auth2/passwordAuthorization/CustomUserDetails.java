@@ -38,7 +38,15 @@ public class CustomUserDetails implements UserDetails{
 		for (Role role : user.getRoles())
 		{
 			
-			auths.add(new SimpleGrantedAuthority(role.getName()));
+			//dc cumva in bd nu erau trecute cu masjuscule, le transform acuma
+			String name = role.getName();
+			name = name.toUpperCase();
+			//dc cumva in bd nu am trecut rolurile sa inceapa cu ROLE_, le transform acum
+			 if (!name.startsWith("ROLE_"))
+	                name = "ROLE_" + name;
+			auths.add(new SimpleGrantedAuthority(name));
+			//am facut transformarile pt ca 
+			//role.getName tre sa fie de  forma ROLE_MY_ClIENT_TYPE_1 (argumentul constructorului tre intotdeauna sa fie uppercase si sa inceapa cu  prefix ROLE_)
 		}
 		this.authorities = auths;
 	}

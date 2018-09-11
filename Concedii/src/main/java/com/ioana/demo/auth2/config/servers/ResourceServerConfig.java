@@ -22,7 +22,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
             .disable()
             .and()
         .authorizeRequests()
-        .antMatchers("/start").permitAll()
+        .antMatchers("/start", "/signin").permitAll()
+        //aici pun toate url urile rest care vreau sa mi fie permise
+        .antMatchers("/").permitAll()
                    .anyRequest().authenticated();
 	}
 	
