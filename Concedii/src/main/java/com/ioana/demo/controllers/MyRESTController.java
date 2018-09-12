@@ -1,9 +1,11 @@
 package com.ioana.demo.controllers;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,8 +40,11 @@ public class MyRESTController {
 
 	// spring REST
 	@RequestMapping(value = "/companyLeaves", method = RequestMethod.GET)
-	public List<LeaveRequest> showLeavesCompanyWide() {
-
+	public List<LeaveRequest> showLeavesCompanyWide(Principal user, Authentication auth) {
+		System.out.println(user.getName());
+		System.out.println(auth.getCredentials());
+		System.out.println(auth.getName());
+		System.out.println(auth.getAuthorities());
 		return lista;
 
 	}
