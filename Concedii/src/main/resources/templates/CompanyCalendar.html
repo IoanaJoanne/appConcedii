@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
  <meta charset="UTF-8" />
- <title> Calendar</title>
+ <title>Company Calendar</title>
 <!-- the skeleton framework similar to bootstrap -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
 </head>
@@ -60,8 +60,8 @@ var app = new Vue({
     			  axios({
                       method:'get',
                       url:'/companyLeaves',
-                      headers: {'Authorization': "bearer " + getCookie("access_token")}
-                    
+                      headers: {'Authorization': "Bearer " + getCookie("access_token")}
+    			//asa apare si in postman preview request headers
                   }) 
               .then(function(response){
                   this.leaves = response.data;

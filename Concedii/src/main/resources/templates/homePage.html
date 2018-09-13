@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+ <meta charset="UTF-8" />
+ <title> Home</title>
+<!-- the skeleton framework similar to bootstrap -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
+</head>
+<body>
+<div id="myPage" class="container">
+
+{{user}}
+
+<p>This is your home page</p>
+<a href="/companyCalendar">Company Calendar</a>
+<a href="/signin">{{signinOption}}</a>
+
+</div>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://vuejs.org/js/vue.js"></script>
+<script>
+
+function getCookie(name) {
+	  var value = "; " + document.cookie;
+	  var parts = value.split("; " + name + "=");
+	  if (parts.length == 2) return parts.pop().split(";").shift();
+	}
+</script>
+<script>
+var app = new Vue({
+	  el: '#myPage',
+	  data: {signinOption: '',
+	  user: '' 
+	  },
+	  mounted(){
+		  /* mounted means that the method showLoggedInUser is invoked once the app is ready */
+        this.showLoggedInUser();
+    },
+    
+    methods: {
+    	showLoggedInUser(){
+    		  if(getCookie("access_token"))
+    			  {
+    			 
+    			  axios({
+                      method:'get',
+                      url:'/retrieveCurrentUser',
+                      headers: {'Authorization': "Bearer " + getCookie("access_token")}
+    			//asa apare si in postman preview request headers
+                  }).then(function(response){
+                      this.user = response.data;
+                  }.bind(this));
+    			  
+    			  
+    			  
+    		  }
+    			  
+  		 	  
+    	}
+    	
+    }
+  	  
+    
+    
+	})
+
+
+</script>
+</html>

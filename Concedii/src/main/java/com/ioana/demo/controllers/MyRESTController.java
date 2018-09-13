@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,6 +62,11 @@ public class MyRESTController {
 	@RequestMapping(value = "/notSignedIn", method = RequestMethod.GET)
 	public String displayMessage() {
 		return "You need to authenticate first to access the content of this page.";
+	}
+	@RequestMapping(value = "/retrieveCurrentUser", method = RequestMethod.GET)
+	public String showUser() {
+		return SecurityContextHolder.getContext().getAuthentication().getName();
+				
 	}
 
 }
