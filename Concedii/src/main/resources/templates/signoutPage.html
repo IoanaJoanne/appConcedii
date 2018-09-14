@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+ <meta charset="UTF-8" />
+ <title>Log out</title>
+<!-- the skeleton framework similar to bootstrap -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
+<style>
+.alert {
+    display: block;
+    padding: 20px;
+    border-left: 5px solid;
+}
+.alert-error {
+    background-color: #F2D7D5;
+    border-left-color: #C0392B;
+    color: #C0392B;
+}
+</style>
+</head>
+<body>
+	<div id="myPage" class="container">
+	<h5> {{signout_msg}}</h5>
+	</div>
+
+</body>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://vuejs.org/js/vue.js"></script>
+<script>
+function getCookie(name) {
+	  var value = "; " + document.cookie;
+	  var parts = value.split("; " + name + "=");
+	  if (parts.length == 2) return parts.pop().split(";").shift();
+	}
+</script>
+<script>
+var app = new Vue({
+	  el: '#myPage',
+	  data:{
+		  
+		  signout_msg: ''
+	  },
+	 mounted()
+	 {
+		this.logoutMethod();
+	 },
+      methods: {
+    	  logoutMethod(){
+    		//dc scriu logout spring automat ma redirectioneaza catre login?logout ca apel rest in backend- pt ca logout e cuv rezervat in spring security
+  //deci in rest apelul va fi pt /login?logout unde sunt redirectionata, nu pt /logout, dar apelul axios ramane catre /logout 
+// apelul axios nu merge decat dc ii pun headerul pt autorizare pt bearer, pt ca /login?logout sa fie si el autorizat ulterior, altfel pt /login?logout imi afiseaza unauthorized in urma redirectionarii
+//asta e singurul mod pt a autoriza /login?logout, nu merge dc ii dau permit in clasele de configurare pt securitate/autentificare
+
+			  var token = getCookie("access_token");
+    		  axios({
+                  method:'get',
+                  url:'/logout', 
+                   headers: { 'Authorization': "Bearer " + token} 
+                	        
+              })
+    		  .then(function(response){
+    			//set expiration date to a past date and no value for the cookie in order to delete it  
+        		 document.cookie = "access_token" + "=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+        		 
+    			  console.log(response.data);
+    			  this.signout_msg = response.data;
+    		  
+    		  }.bind(this));
+    		 
+    		  
+    	  }
+      }
+	})
+
+
+
+</script>
+</html>

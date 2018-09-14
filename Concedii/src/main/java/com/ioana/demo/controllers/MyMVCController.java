@@ -19,6 +19,11 @@ public class MyMVCController {
 
 		return "signinPage";
 	}
+	@RequestMapping(value = "/signout", method = RequestMethod.GET)
+	public String displayLogoutPage() {
+
+		return "signoutPage";
+	}
 
 	@RequestMapping(value = "/companyCalendar", method = RequestMethod.GET)
 	public String displayCompanyCalendarPage() {

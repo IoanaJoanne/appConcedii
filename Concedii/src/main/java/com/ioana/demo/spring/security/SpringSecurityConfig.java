@@ -54,11 +54,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	                .anyRequest().authenticated()
 	                .and()
 	            .httpBasic()
+	            
 	                .and()
+	               
 	            .csrf().disable();
-	    }
-	 
-	
-	 
+	 }
 	
 }

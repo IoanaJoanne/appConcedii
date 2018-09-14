@@ -14,6 +14,10 @@ import com.ioana.demo.auth2.DB.entities.User;
 //THIS IS STEP 7
 public class CustomUserDetails implements UserDetails{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2526893992938111348L;
 	//se afla in legatura cu datele care sunt verificate la autorizarea userului prin mecanismul de password,
 	//adica: user credentials: username and password si autoritatea userului
 	//authorities asociate unui user: fiecare valoare individuala e formata din ROLE_ROLEVALUE,
@@ -92,4 +96,11 @@ public class CustomUserDetails implements UserDetails{
 		
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "CustomUserDetails [username=" + username + ", password=" + password + ", authorities=" + authorities
+				+ "]";
+	}
+	
 }

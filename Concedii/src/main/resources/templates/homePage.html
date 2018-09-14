@@ -11,9 +11,17 @@
 
 {{user}}
 
+
 <p>This is your home page</p>
 <a href="/companyCalendar">Company Calendar</a>
-<a href="/signin">{{signinOption}}</a>
+<!-- <span v-show="isLoggedIn"><a href ="/signout">Sign out</a></span> -->
+<span v-if="isLoggedIn">
+  <a href ="/signout">Sign out</a>
+</span>
+<span v-else>
+  <a href ="/signin">Sign in</a>
+</span>
+
 
 </div>
 </body>
@@ -30,11 +38,12 @@ function getCookie(name) {
 <script>
 var app = new Vue({
 	  el: '#myPage',
-	  data: {signinOption: '',
-	  user: '' 
+	  data: {
+	  user: '' ,
+	  isLoggedIn: false
 	  },
 	  mounted(){
-		  /* mounted means that the method showLoggedInUser is invoked once the app is ready */
+		  /* mounted means that the method showLoggedInUser is invoked once the app is ready, when the page is loaded*/
         this.showLoggedInUser();
     },
     
@@ -42,7 +51,7 @@ var app = new Vue({
     	showLoggedInUser(){
     		  if(getCookie("access_token"))
     			  {
-    			 
+    			  this.isLoggedIn = true;
     			  axios({
                       method:'get',
                       url:'/retrieveCurrentUser',
@@ -50,6 +59,7 @@ var app = new Vue({
     			//asa apare si in postman preview request headers
                   }).then(function(response){
                       this.user = response.data;
+                   
                   }.bind(this));
     			  
     			  

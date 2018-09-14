@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-<<<<<<< HEAD
-import org.springframework.security.core.context.SecurityContextHolder;
-=======
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
->>>>>>> 0b4e5637a59408d376c8f62da9c125a76ddc6a64
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +25,9 @@ import com.ioana.demo.models.LeaveType;
 @RestController
 public class MyRESTController {
 
+	@Autowired
+    private TokenStore tokenStore;
+	
 	public static List<LeaveRequest> lista;
 	static {
 		lista = new ArrayList<>();
@@ -44,11 +49,8 @@ public class MyRESTController {
 
 	// spring REST
 	@RequestMapping(value = "/companyLeaves", method = RequestMethod.GET)
-	public List<LeaveRequest> showLeavesCompanyWide(Principal user, Authentication auth) {
-		System.out.println(user.getName());
-		System.out.println(auth.getCredentials());
-		System.out.println(auth.getName());
-		System.out.println(auth.getAuthorities());
+	public List<LeaveRequest> showLeavesCompanyWide() {
+		
 		return lista;
 
 	}
@@ -71,10 +73,39 @@ public class MyRESTController {
 	public String displayMessage() {
 		return "You need to authenticate first to access the content of this page.";
 	}
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String signoutOfAcc(HttpServletRequest req, HttpServletResponse res) {
+		
+		//tokenu tre sters si din backend din tokenStore
+	//	 tokenStore.removeAccessToken(tokenStore.readAccessToken("accessToken"));
+		
+		
+	//	verific dc mi intra pe cazul /login?logout, care ma intereseaza, vreau sa verific dc parametrul logout exista pe request si este singurul parametru
+//si nu are nicio valoare- e un string empty
+		System.out.println(req.getParameterMap().containsKey("logout"));
+		System.out.println(req.getParameterMap().size());
+		System.out.println(req.getParameterMap().get("logout")[0]);
+	if (req.getParameterMap().containsKey("logout") && req.getParameterMap().size() ==1 && req.getParameterMap().get("logout")[0] == "")
+	
+		return "You have been successfully logged out of your account";
+	
+	else return ""; //return an empty String, but not a null value ca sa nu crape back-endu cu NullPointerException
+	}
+	
 	@RequestMapping(value = "/retrieveCurrentUser", method = RequestMethod.GET)
-	public String showUser() {
-		return SecurityContextHolder.getContext().getAuthentication().getName();
-				
+	public String showUser(Principal user, Authentication auth) {
+//principal in spring security is the current logged in user
+	//alternativa la  Principal sau Authentication
+		System.out.println("cu security context username-ul este: "+SecurityContextHolder.getContext().getAuthentication().getName());
+		System.out.println("tot cu security context sau cu authentication.getPrincipal(), returneaza o implementare a userDetails, adica un obiect de tip CustomUserDetails: "+SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+//SecurityContextHolder.getContext().getAuthentication() returneaza tot un obiect de tip Authentication
+			
+		System.out.println("with Principal username is: "+user.getName());
+		//authentication e alternativa la principal
+	//	System.out.println("with authentication credentials are: "+auth.getCredentials().toString());-- not working, nu afiseaza nimic
+		System.out.println("with authentication username is: "+auth.getName());
+		System.out.println("with authentiation authorities are: "+auth.getAuthorities());
+		return user.getName();
 	}
 
 }
