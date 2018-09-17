@@ -1,5 +1,6 @@
 package com.ioana.demo.spring.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +25,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	//Requested bean is currently in creation: Is there an unresolvable circular reference?
 
 	
+
 	
 	@Bean
     
@@ -41,6 +45,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	     return super.userDetailsService();
 	 }
 	
+	 @Bean
+	 public TokenStore tokenStore() {
+	     return new InMemoryTokenStore();//all access tokens are lost if authorization server is restarted when u use in-memory token store
+//in memory token store is preferred during development but not in production
+//alternative: user jdbc token store so the tokens are persisted and stored in a real database, so u don't lose them when authorization server is restarted
+//To use the JdbcTokenStore you need "spring-jdbc" on the classpath- the spring jdbc maven dependency
+	 }
 	
 	 
 	 //STEP 10- define the rules for urls

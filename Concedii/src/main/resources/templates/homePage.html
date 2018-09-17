@@ -41,6 +41,7 @@ var app = new Vue({
 	  data: {
 	  user: '' ,
 	  isLoggedIn: false
+	
 	  },
 	  mounted(){
 		  /* mounted means that the method showLoggedInUser is invoked once the app is ready, when the page is loaded*/
@@ -51,7 +52,7 @@ var app = new Vue({
     	showLoggedInUser(){
     		  if(getCookie("access_token"))
     			  {
-    			  this.isLoggedIn = true;
+    			 
     			  axios({
                       method:'get',
                       url:'/retrieveCurrentUser',
@@ -59,12 +60,19 @@ var app = new Vue({
     			//asa apare si in postman preview request headers
                   }).then(function(response){
                       this.user = response.data;
+                      this.isLoggedIn = true;
                    
+                  }.bind(this))
+                  .catch(function (error) {
+                	  //this error is for the case when token exists, the user has signed in but the token  has become invalid- meaning that the token has become invalid after a set period of time- time set in authorizationserver config
+                      console.log(error.response);
+                     
                   }.bind(this));
     			  
     			  
     			  
     		  }
+    		  
     			  
   		 	  
     	}

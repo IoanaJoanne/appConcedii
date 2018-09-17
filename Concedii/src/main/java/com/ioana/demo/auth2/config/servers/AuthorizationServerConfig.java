@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 //THIS IS STEP1
 @Configuration
@@ -23,6 +24,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Autowired
     private AuthenticationManager authenticationManager;//=> PART OF STEP 1- DEFINE THE AUTHENTICATION MANAGER BEAN
 	//IN THE  SPRING SECURITY CLASS WHERE SPRING SECURITY CONFIGS ARE MADE
+	
+	@Autowired
+    TokenStore tokenStore;
 	
 	@Autowired
     private PasswordEncoder passwordEncoder;//=> PART OF STEP 1- DEFINE THE PASSWORD ENCODER BEAN
@@ -71,6 +75,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints
         .authenticationManager(authenticationManager);
+		 endpoints.tokenStore(tokenStore);
 	}
 
 	

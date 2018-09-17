@@ -69,15 +69,20 @@
 			<scope>runtime</scope>
 		</dependency>
 
-	<!-- needed for Authorization server and auth2 configurations -->
+		<!-- needed for Authorization server and auth2 configurations -->
 		<dependency>
 			<groupId>org.springframework.security.oauth</groupId>
 			<artifactId>spring-security-oauth2</artifactId>
 			<version>2.1.0.RELEASE</version>
 		</dependency>
 
+	<!-- needed for json parsing -->
 
-
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20080701</version>
+		</dependency>
 
 
 

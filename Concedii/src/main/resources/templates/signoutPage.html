@@ -52,13 +52,35 @@ var app = new Vue({
 // apelul axios nu merge decat dc ii pun headerul pt autorizare pt bearer, pt ca /login?logout sa fie si el autorizat ulterior, altfel pt /login?logout imi afiseaza unauthorized in urma redirectionarii
 //asta e singurul mod pt a autoriza /login?logout, nu merge dc ii dau permit in clasele de configurare pt securitate/autentificare
 
-			  var token = getCookie("access_token");
-    		  axios({
+			 
+    	    var token = getCookie("access_token");
+    		axios({
                   method:'get',
                   url:'/logout', 
                    headers: { 'Authorization': "Bearer " + token} 
                 	        
               })
+          	/* 
+             
+              var myjson = JSON.stringify({
+                 
+                  access_token: token
+              });
+           //   var params = new URLSearchParams();//ca sa pot sa setez headeru cu form url encoded
+            //  params.append('access_token', token);
+              axios({
+                  method:'post',
+                  url:'/signoutOfAcc', 
+                  headers: { 
+                	 //  "Content-type": "application/x-www-form-urlencoded; charset=utf-8",
+  //pot trimite request body si sub forma de json, nu neaparat url encoded
+   "Content-type": "application/json; charset=utf-8", //asta cu application/json o iau din postman
+   "Authorization": "Bearer " + token},
+                	
+               //   data:params    
+               data: myjson
+              })
+                 */
     		  .then(function(response){
     			//set expiration date to a past date and no value for the cookie in order to delete it  
         		 document.cookie = "access_token" + "=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;";
