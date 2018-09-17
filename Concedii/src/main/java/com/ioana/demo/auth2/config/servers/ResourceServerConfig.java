@@ -1,5 +1,6 @@
 package com.ioana.demo.auth2.config.servers;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -21,8 +22,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
             .frameOptions()
             .disable()
             .and()
-        .authorizeRequests()
+        .authorizeRequests().requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
         .antMatchers("/test", "/notSignedIn", "/signin", "/signout", "/register", "/companyCalendar", "/",  "/h2/**").permitAll()
+        
         //view-urile populate cu date din rest api, adica url urile mvc nu s restrictionate
         //pt ca rest api-urile apelate de ele sunt restrictionate: ori afiseaza datele din rest api ori afiseaza mesajul tre sa te loghezi
         //singurul rest api nerestrictionat e cel de test si notSignedIn

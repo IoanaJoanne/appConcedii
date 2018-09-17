@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+ <meta charset="UTF-8" />
+ <title> Home</title>
+<!-- the skeleton framework similar to bootstrap -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
+</head>
+<body>
+
+<!-- SPRIG BOOT INCARCA AUTOMAT INDEX PAGE (INDEX.HTML) CAND NAVIGHEZ CATRE LOCALHOST:8080
+INDEX.HTML E AUTOMAT CONSIDERAT WELCOME FILE -->
+
+
+<div id="myPage">
+<div class="container">
+ <!-- this is what will appear on top of every page section- no matter what section (login, my acc, etc) -->
+ <h2 v-show="isLoggedIn">Welcome {{user}} </h2>
+ 
+<!-- will  place the router links inside a navbar component later -->
+ <router-link to="/companycalendar">Company Calendar</router-link>
+ <span v-if= "isLoggedIn">
+  <router-link to="/myacc">My account</router-link>
+  <router-link to="/signout">Sign out</router-link>
+  
+  </span>
+  <span v-else>
+  <router-link to="/signin">Sign in</router-link>
+  <router-link to="/register">Register</router-link>
+  </span>
+  
+  <div class = "container">
+  <!-- inside the router view is space allocated for a section -->
+  <router-view> </router-view>
+  </div>
+
+
+
+</div>
+</div>
+</body>
+
+
+
+
+
+<!-- <p>This is your home page</p>
+<a href="/companyCalendar">Company Calendar</a>
+<span v-show="isLoggedIn"><a href ="/signout">Sign out</a></span>
+<span v-if="isLoggedIn">
+  <a href ="/signout">Sign out</a>
+</span>
+<span v-else>
+  <a href ="/signin">Sign in</a>
+</span> -->
+
+
+
+<!-- old cdn for vue from tutorial
+<script src="https://vuejs.org/js/vue.js"></script> -->
+
+
+<!-- UNPKG SITE- DOWNLOAD EVERYTHING THAT IS ON NMP - NODE PACKAGE MANAGER- SO U DON'T HAVE TO MANUALLY INSTALL NODEJS -->
+<!-- TYPE https://unpkg.com/WHAT-U-WANT/dist/ AND IT WILL AUTOMATICALLY REDIRECT YOU TO THE FOLDER WITH THE FILES THE LATEST VERSIONS -->
+<!-- https://unpkg.com/axios/dist/axios.min.js VA REDIRECTIONA CATRE ULTIMA VERSIUNE ADICA https://unpkg.com/axios@0.18.0/dist/min.js -->
+<!-- ASA CA PT IMPORT SCRIPTURI FARA A PRECIZA O ANUMITA VERSIUNE USE https://unpkg.com/WHAT-U-WANT/dist/FILENAME -->
+<!-- LA FEL PROCEDEZ SI CU ALTE SITE-URI DE CDN EXEMPLU: cdnjs
+https://cdn.jsdelivr.net/npm/axios/dist/ -->
+
+
+<!-- cdn (content delivery network website) for vue js -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- cdn for vue router -->
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<!-- cdn for axios -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+<script src="resources/cookie.js"></script> 
+
+<script>
+var companyCalendar = {template:"<h1>Calendar displayed company wide</h1>"};
+var myAcc = {template:"<h1>This is my account</h1>"};
+var signIn = {template:"<h1>You have signed in</h1>"};
+var signOut = {template:"<h1>You have signed out</h1>"};
+var registerAcc = {template:"<h1>You've made a new acc </h1>"};
+
+var router = new VueRouter({
+	 
+	  routes: [
+	    { path: '/companycalendar', component: companyCalendar },
+	    { path: 'myacc', component: myAcc },
+	    { path: '/signin', component: signIn },
+	    { path: 'signout', component: signOut },
+	    { path: '/register', component: registerAcc }
+	   
+	    
+	  ]
+	});
+	
+var app = new Vue({
+	  router,
+	  el: '#myPage',
+	  data: {
+	  user: '' ,
+	  isLoggedIn: false
+	
+	  },
+	  mounted(){
+		  /* mounted means that the method showLoggedInUser is invoked once the app is ready, when the page is loaded*/
+        this.showLoggedInUser();
+    },
+    
+    methods: {
+    	showLoggedInUser(){
+    		  if(getCookie("access_token"))
+    			  {
+    			 
+    			  axios({
+                      method:'get',
+                      url:'/retrieveCurrentUser',
+                      headers: {'Authorization': "Bearer " + getCookie("access_token")}
+    			//asa apare si in postman preview request headers
+                  }).then(function(response){
+                      this.user = response.data;
+                      this.isLoggedIn = true;
+                   
+                  }.bind(this))
+                  .catch(function (error) {
+                	  //this error is for the case when token exists, the user has signed in but the token  has become invalid- meaning that the token has become invalid after a set period of time- time set in authorizationserver config
+                      console.log(error.response);
+                     
+                  }.bind(this));
+    			  
+    			  
+    			  
+    		  }
+    		  
+    			  
+  		 	  
+    	}
+    	
+    }
+  	  
+    
+    
+	})
+
+
+</script>
+</html>

@@ -1,6 +1,5 @@
 package com.ioana.demo.spring.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -61,6 +60,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 	            .authorizeRequests()
 	           
 	                .antMatchers("/oauth/token").permitAll()
+	               
 	                //aici pun doar chestia cu token
 	                .anyRequest().authenticated()
 	                .and()

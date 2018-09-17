@@ -51,6 +51,7 @@
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
 		<!-- a spring mvc view layer instead of the old jsp -->
+		<!-- because u use thymeleaf the view files (html) will be located in src/main/resources/templates -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>

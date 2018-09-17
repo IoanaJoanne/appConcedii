@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MyMVCController {
 	// spring MVC
-
+/*
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String displayHomePage() {
 
@@ -30,5 +30,5 @@ public class MyMVCController {
 
 		return "CompanyCalendar";
 	}
-
+*/
 }
