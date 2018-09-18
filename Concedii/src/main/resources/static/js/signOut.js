@@ -1,47 +1,16 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<head>
- <meta charset="UTF-8" />
- <title>Log out</title>
-<!-- the skeleton framework similar to bootstrap -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
-<style>
-.alert {
-    display: block;
-    padding: 20px;
-    border-left: 5px solid;
-}
-.alert-error {
-    background-color: #F2D7D5;
-    border-left-color: #C0392B;
-    color: #C0392B;
-}
-</style>
-</head>
-<body>
-	<div id="myPage" class="container">
-	<h5> {{signout_msg}}</h5>
-	</div>
 
-</body>
+/*this is a global component, meaning that it can be used inside any root vue element (adica un element de tipul var myvariable = new Vue({}) )*/
+ /*a local component is the one defined as a simple javascript object with var myvariable = {}*/
+/*a local component can be used only inside the current root element */
 
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://vuejs.org/js/vue.js"></script>
-<script>
-function getCookie(name) {
-	  var value = "; " + document.cookie;
-	  var parts = value.split("; " + name + "=");
-	  if (parts.length == 2) return parts.pop().split(";").shift();
-	}
-</script>
-<script>
-var app = new Vue({
-	  el: '#myPage',
-	  data:{
+Vue.component('signOut',{
+	 
+	/*template: '<h5> {{signout_msg}}</h5>',*/
+	data: function() {return {
 		  
 		  signout_msg: ''
-	  },
-	 mounted()
+	  }},
+	 created()
 	 {
 		this.logoutMethod();
 	 },
@@ -87,15 +56,12 @@ var app = new Vue({
         		 
     			  console.log(response.data);
     			  this.signout_msg = response.data;
-    		  
+    		      document.location.replace("/");
     		  }.bind(this));
     		 
     		  
     	  }
       }
-	})
-
-
-
-</script>
-</html>
+	 
+	 
+ });

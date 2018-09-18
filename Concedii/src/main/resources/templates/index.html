@@ -5,6 +5,20 @@
  <title> Home</title>
 <!-- the skeleton framework similar to bootstrap -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
+<style>
+<style>
+.alert {
+    display: block;
+    padding: 20px;
+    border-left: 5px solid;
+}
+.alert-error {
+    background-color: #F2D7D5;
+    border-left-color: #C0392B;
+    color: #C0392B;
+}
+</style>
+</style>
 </head>
 <body>
 
@@ -18,7 +32,7 @@ INDEX.HTML E AUTOMAT CONSIDERAT WELCOME FILE -->
  <h2 v-show="isLoggedIn">Welcome {{user}} </h2>
  
 <!-- will  place the router links inside a navbar component later -->
- <router-link to="/companycalendar">Company Calendar</router-link>
+ 
  <span v-if= "isLoggedIn">
   <router-link to="/myacc">My account</router-link>
   <router-link to="/signout">Sign out</router-link>
@@ -28,31 +42,21 @@ INDEX.HTML E AUTOMAT CONSIDERAT WELCOME FILE -->
   <router-link to="/signin">Sign in</router-link>
   <router-link to="/register">Register</router-link>
   </span>
+  <router-link to="/companycalendar">Company Calendar</router-link>
+  </div>
   
   <div class = "container">
+ 
   <!-- inside the router view is space allocated for a section -->
-  <router-view> </router-view>
+  <router-view :loggedin="isLoggedIn"> </router-view>
+  <!-- isloggedin e variabila din parent iar loggedin e variabila din componenta -->
   </div>
 
 
 
-</div>
+
 </div>
 </body>
-
-
-
-
-
-<!-- <p>This is your home page</p>
-<a href="/companyCalendar">Company Calendar</a>
-<span v-show="isLoggedIn"><a href ="/signout">Sign out</a></span>
-<span v-if="isLoggedIn">
-  <a href ="/signout">Sign out</a>
-</span>
-<span v-else>
-  <a href ="/signin">Sign in</a>
-</span> -->
 
 
 
@@ -77,21 +81,33 @@ https://cdn.jsdelivr.net/npm/axios/dist/ -->
 
 
 <script src="js/cookie.js"></script> 
+<script src="js/companyCalendar.js"></script> 
+<script src="js/signIn.js"></script>
+<script src="js/signOut.js"></script>
+
 
 <script>
-var companyCalendar = {template:"<h1>Calendar displayed company wide</h1>"};
-var myAcc = {template:"<h1>This is my account</h1>"};
-var signIn = {template:"<h1>You have signed in</h1>"};
-var signOut = {template:"<h1>You have signed out</h1>"};
-var registerAcc = {template:"<h1>You've made a new acc </h1>"};
+/* var companyCalendar = {template:"<h1>Calendar displayed company wide</h1>"}; */
+ /* the above example is a local component defined with var like any javascript object- locally registered component available only for this root element*/
 
+/*  Vue.component('myAcc', {template:"<h1>This is my acc"}); */
+ /* the above example is a global component */
+ 
+ /* since a component(global or local registered) contains many elements: template (html), functions etc, each component will be included in a separate javascript file */
+ 
+ /* note that in a component (local or global) data is defined like a function that returns the data variables, unlike in the root element where data variables are defined directly*/
+ 
+  
+ 
+  var registerAcc = {template:"<h1>Calendar displayed company wide</h1>"};
+  
 var router = new VueRouter({
 	 
 	  routes: [
-	    { path: '/companycalendar', component: companyCalendar },
-	    { path: '/myacc', component: myAcc },
-	    { path: '/signin', component: signIn },
-	    { path: '/signout', component: signOut },
+	    { path: '/companycalendar', component: companyCalendar}, /* how u route a local registered component */
+	    { path: '/myacc', component: Vue.component('myAcc') },  /* how u route a global component */
+	    { path: '/signin', component: Vue.component('signIn') },
+	    { path: '/signout', component: Vue.component('signOut') },
 	    { path: '/register', component: registerAcc }
 	   
 	    
@@ -99,18 +115,21 @@ var router = new VueRouter({
 	});
 	
 var app = new Vue({
+	/* this is a root element */
 	  router,
 	  el: '#myPage',
 	  data: {
 	  user: '' ,
-	  isLoggedIn: false
+	  isLoggedIn: '',
+	  signInRequired_msg: ''
 	
 	  },
-	  mounted(){
-		  /* mounted means that the method showLoggedInUser is invoked once the app is ready, when the page is loaded*/
-        this.showLoggedInUser();
-    },
-    
+	  created(){
+		 
+			
+	    this.showLoggedInUser();
+	},
+	 
     methods: {
     	showLoggedInUser(){
     		  if(getCookie("access_token"))
@@ -129,11 +148,19 @@ var app = new Vue({
                   .catch(function (error) {
                 	  //this error is for the case when token exists, the user has signed in but the token  has become invalid- meaning that the token has become invalid after a set period of time- time set in authorizationserver config
                       console.log(error.response);
+                      signInRequired_msg = "Your session has timed out. Please sign in again.";
+                      this.isLoggedIn = false;
                      
                   }.bind(this));
     			  
     			  
     			  
+    		  }
+    		  else { //this is for the case when the token does not exist so the user hasn't signed in
+    			  
+    			  signInRequired_msg =  "You are not signed in. Please authenticate first to access this resource.";
+    			  this.isLoggedIn = false;
+    			  console.log("there's no token- get cookie returns undefined");
     		  }
     		  
     			  
@@ -144,8 +171,9 @@ var app = new Vue({
   	  
     
     
-	})
+	});
 
 
 </script>
+
 </html>
