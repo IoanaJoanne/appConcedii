@@ -23,7 +23,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
             .disable()
             .and()
         .authorizeRequests()
-        .antMatchers("/test", "/notSignedIn", "/signin", "/signout", "/register", "/companyCalendar", "/",  "/h2/**", "/js/**", "/css/**").permitAll()
+        .antMatchers("/test", "/notSignedIn", "/signin", "/signout", "/register", "/companyCalendar", "/",  "/h2/**", "/js/**", "/css/**", "/favicon.ico").permitAll()
         
         //view-urile populate cu date din rest api, adica url urile mvc nu s restrictionate
         //pt ca rest api-urile apelate de ele sunt restrictionate: ori afiseaza datele din rest api ori afiseaza mesajul tre sa te loghezi

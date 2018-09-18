@@ -18,7 +18,7 @@
     color: #C0392B;
 }
 </style>
-</style>
+
 </head>
 <body>
 
@@ -29,7 +29,10 @@ INDEX.HTML E AUTOMAT CONSIDERAT WELCOME FILE -->
 <div id="myPage">
 <div class="container">
  <!-- this is what will appear on top of every page section- no matter what section (login, my acc, etc) -->
- <h2 v-show="isLoggedIn">Welcome {{user}} </h2>
+
+ <h2 v-if="isLoggedIn==true">Welcome {{user}} </h2>
+
+ 
  
 <!-- will  place the router links inside a navbar component later -->
  
@@ -43,16 +46,16 @@ INDEX.HTML E AUTOMAT CONSIDERAT WELCOME FILE -->
   <router-link to="/register">Register</router-link>
   </span>
   <router-link to="/companycalendar">Company Calendar</router-link>
-  </div>
   
-  <div class = "container">
+  
+  <div class = "row">
  
   <!-- inside the router view is space allocated for a section -->
   <router-view :loggedin="isLoggedIn"> </router-view>
   <!-- isloggedin e variabila din parent iar loggedin e variabila din componenta -->
   </div>
 
-
+</div>
 
 
 </div>
@@ -120,7 +123,7 @@ var app = new Vue({
 	  el: '#myPage',
 	  data: {
 	  user: '' ,
-	  isLoggedIn: '',
+	  isLoggedIn: false,
 	  signInRequired_msg: ''
 	
 	  },
