@@ -1,13 +1,13 @@
 Vue.component('signIn', {
-	template: '<div><div class="row">'
+	template: '<div class="row"><center>'
 				+ '<label for="THEusername">Username</label>'
 				+ '<input v-model="username"  type="text"  id="THEusername" />'
 				+ '<label for="THEpassword">Password</label>'
 				+ '<input v-model="password"  type="password" id="THEpassword" />'
 				+ '<br>'
-				+ '<input  type="submit" v-on:click="loginMethod" value="submit credentials" /></div><br>'
+				+ '<input  type="submit" v-on:click="loginMethod" value="sign in" /> <br>'
 				+ '<div id="signinError" class="alert alert-error six columns" style="display:none;">'
-				+ 'Username and/or password provided are not valid. Please try again.</div></div>',
+				+ 'Username and/or password provided are not valid. Please try again.</div></center></div>',
 
 	data: function() { 
 		return {

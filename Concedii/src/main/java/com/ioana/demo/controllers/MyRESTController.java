@@ -2,6 +2,7 @@ package com.ioana.demo.controllers;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ioana.demo.auth2.DB.entities.Role;
+import com.ioana.demo.auth2.DB.entities.User;
+import com.ioana.demo.auth2.DB.services.MyUserService;
 import com.ioana.demo.models.Employee;
 import com.ioana.demo.models.LeaveRequest;
 import com.ioana.demo.models.LeaveStatus;
@@ -31,6 +35,9 @@ public class MyRESTController {
 
 	@Autowired
     private TokenStore tokenStore;
+	
+	@Autowired
+    private MyUserService userService;
 	
 	public static List<LeaveRequest> lista;
 	static {
@@ -67,6 +74,26 @@ public class MyRESTController {
 		System.out.println("token after removal from token store: "+tokenStore.readAccessToken(token_value));
 		
 		return "You have been successfully logged out of your account";
+
+	}
+	@RequestMapping(value = "/newUser", method = RequestMethod.POST)
+	public String register(@RequestBody String accInfo) throws JSONException {
+		
+		System.out.println(accInfo);
+		JSONObject myjson = new JSONObject(accInfo);
+		String username = myjson.getString("username");
+		String password = myjson.getString("password");
+		
+		 if  (userService.findByUsername(username) != null) {
+			 return "username already taken by another user";
+			
+		}
+		else {
+			
+			userService.save(new User(username, password, Arrays.asList(new Role("ROLE_EMPLOYEE"))));
+			
+			return "new employee user has been registered";
+		}
 
 	}
 	@RequestMapping(value = "/companyLeaves", method = RequestMethod.GET)

@@ -5,7 +5,7 @@
  <title> Home</title>
 <!-- the skeleton framework similar to bootstrap -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
-<style>
+
 <style>
 .alert {
     display: block;
@@ -17,6 +17,11 @@
     border-left-color: #C0392B;
     color: #C0392B;
 }
+/* log in alert style above */
+/* v-cloak for not displaying {{variable}} before compiling the variable value */
+[v-cloak] {
+ display:none;
+}
 </style>
 
 </head>
@@ -25,18 +30,20 @@
 <!-- SPRIG BOOT INCARCA AUTOMAT INDEX PAGE (INDEX.HTML) CAND NAVIGHEZ CATRE LOCALHOST:8080
 INDEX.HTML E AUTOMAT CONSIDERAT WELCOME FILE -->
 
-
-<div id="myPage">
+<!-- v-cloak applied to the root element so that u don't repeat yourself -->
+<div id="myPage"  v-cloak>
 <div class="container">
  <!-- this is what will appear on top of every page section- no matter what section (login, my acc, etc) -->
 
- <h2 v-if="isLoggedIn==true">Welcome {{user}} </h2>
 
  
+<div class = "row">
  
+ <center>
 <!-- will  place the router links inside a navbar component later -->
  
- <span v-if= "isLoggedIn">
+ <span v-if= "user != ''">
+ <!-- dc user  nu este empty string inseamna ca este logat, iar usernme-ul ceui logat a fost obtinut cu success -->
   <router-link to="/myacc">My account</router-link>
   <router-link to="/signout">Sign out</router-link>
   
@@ -46,13 +53,20 @@ INDEX.HTML E AUTOMAT CONSIDERAT WELCOME FILE -->
   <router-link to="/register">Register</router-link>
   </span>
   <router-link to="/companycalendar">Company Calendar</router-link>
+  </center>
+  </div>
   
-  
+  <br><br><br>
   <div class = "row">
  
   <!-- inside the router view is space allocated for a section -->
-  <router-view :loggedin="isLoggedIn"> </router-view>
-  <!-- isloggedin e variabila din parent iar loggedin e variabila din componenta -->
+
+<router-view v-bind:welcomeuser="user"></router-view>
+
+<!-- user e variabila din parent si welcome user e propsu din componente -->
+<!-- pun chestia asta de obicei ca propriettae la tagul cu numele componentei, deci unde e afisat html ul componentei sau
+in router view in cazul meu pt ca aici va fi afisat html ul componentei -->
+ 
   </div>
 
 </div>
@@ -87,6 +101,7 @@ https://cdn.jsdelivr.net/npm/axios/dist/ -->
 <script src="js/companyCalendar.js"></script> 
 <script src="js/signIn.js"></script>
 <script src="js/signOut.js"></script>
+<script src="js/registerAcc.js"></script>
 
 
 <script>
@@ -102,7 +117,7 @@ https://cdn.jsdelivr.net/npm/axios/dist/ -->
  
   
  
-  var registerAcc = {template:"<h1>Calendar displayed company wide</h1>"};
+  
   
 var router = new VueRouter({
 	 
@@ -111,7 +126,7 @@ var router = new VueRouter({
 	    { path: '/myacc', component: Vue.component('myAcc') },  /* how u route a global component */
 	    { path: '/signin', component: Vue.component('signIn') },
 	    { path: '/signout', component: Vue.component('signOut') },
-	    { path: '/register', component: registerAcc }
+	    { path: '/register', component:  Vue.component('registerAcc')}
 	   
 	    
 	  ]
@@ -122,12 +137,11 @@ var app = new Vue({
 	  router,
 	  el: '#myPage',
 	  data: {
-	  user: '' ,
-	  isLoggedIn: false,
-	  signInRequired_msg: ''
+	  user: ''   // user will be used as props inside the components
+	  
 	
 	  },
-	  created(){
+	  mounted(){
 		 
 			
 	    this.showLoggedInUser();
@@ -136,6 +150,7 @@ var app = new Vue({
     methods: {
     	showLoggedInUser(){
     		  if(getCookie("access_token"))
+    			  //adica dc exista tokenul, nu e undefiend
     			  {
     			 
     			  axios({
@@ -144,15 +159,15 @@ var app = new Vue({
                       headers: {'Authorization': "Bearer " + getCookie("access_token")}
     			//asa apare si in postman preview request headers
                   }).then(function(response){
-                      this.user = response.data;
-                      this.isLoggedIn = true;
+                      this.user = "Welcome "+response.data;
+                     
                    
                   }.bind(this))
                   .catch(function (error) {
                 	  //this error is for the case when token exists, the user has signed in but the token  has become invalid- meaning that the token has become invalid after a set period of time- time set in authorizationserver config
                       console.log(error.response);
-                      signInRequired_msg = "Your session has timed out. Please sign in again.";
-                      this.isLoggedIn = false;
+                     
+                     
                      
                   }.bind(this));
     			  
@@ -161,9 +176,9 @@ var app = new Vue({
     		  }
     		  else { //this is for the case when the token does not exist so the user hasn't signed in
     			  
-    			  signInRequired_msg =  "You are not signed in. Please authenticate first to access this resource.";
-    			  this.isLoggedIn = false;
-    			  console.log("there's no token- get cookie returns undefined");
+    			 
+    			  
+    			  console.log("there's no token- get cookie returns undefined, so u haven't signed in yet");
     		  }
     		  
     			  

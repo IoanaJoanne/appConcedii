@@ -51,11 +51,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         //client_credentials means credentials of the client used to obtain he access token- machine to machine authentication
         //ex credentials of Twitter used as a client: the client id and secret
         //password is for user verification: username and password: ex: username john and password kiki
-        .authorities("ROLE_MY_CLIENT","ROLE_MY_SUPER_TRUSTED_CLIENT")
+        .authorities("ROLE_EMPLOYEE","ROLE_MANAGER")
         //the .authorities here can be ommited- user is not limited by authority in this case- n-am useri de mai multe tipuri
         //authority value starts with the prefix ROLE_ followed by role value, authority string e scris cu uppercase
        // the values for roles i store them in a roles table in the database care e legata de tabela users pt a stabili relatia user-role
-        //i check if the user has any of the following authority: MY_CLIENT and MY_TRUSTED_CLIENT (authotities to be checked :MY_CLIENT and MY_TRUSTED_CLIENT are random values)
+        //i check if the user has any of the following authority: EMPLOYEE and MANAGER (authotities to be checked :MY_CLIENT and MY_TRUSTED_CLIENT are random values)
         .scopes("read_my_status","write_my_status")
         //.scopes here can be ommited- client is not limited by scope in this case
         //scope is the client authority: ex Twitter as the client can post the users tweet on facebook; scope value could be write_facebook_status in this case

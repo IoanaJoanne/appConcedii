@@ -50,7 +50,7 @@ public class ConcediiApplication {
 		if (repo.count() == 0) {
 			service.save(new User("user", // username
 					"ioana", // password
-					Arrays.asList(new Role("ROLE_MY_CLIENT"), new Role("ROLE_MY_CLIENT_TYPE_2"))));
+					Arrays.asList(new Role("ROLE_EMPLOYEE"), new Role("ROLE_ANOTHER"))));
 
 		}
 		// => STEP 4: add user repo interface implemented from jpa- find the user by

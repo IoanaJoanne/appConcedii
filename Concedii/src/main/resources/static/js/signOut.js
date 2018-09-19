@@ -10,13 +10,13 @@ Vue.component('signOut',{
 		  
 		  signout_msg: ''
 	  }},
-	 created()
+	 mounted()
 	 {
 		this.logoutMethod();
 	 },
       methods: {
     	  logoutMethod(){
-    		//dc scriu logout spring automat ma redirectioneaza catre login?logout ca apel rest in backend- pt ca logout e cuv rezervat in spring security
+    		//dc scriu logout spring automat ma redirectioneaza catre login?logout ca apel rest de tip get in backend- pt ca logout e cuv rezervat in spring security
   //deci in rest apelul va fi pt /login?logout unde sunt redirectionata, nu pt /logout, dar apelul axios ramane catre /logout 
 // apelul axios nu merge decat dc ii pun headerul pt autorizare pt bearer, pt ca /login?logout sa fie si el autorizat ulterior, altfel pt /login?logout imi afiseaza unauthorized in urma redirectionarii
 //asta e singurul mod pt a autoriza /login?logout, nu merge dc ii dau permit in clasele de configurare pt securitate/autentificare
