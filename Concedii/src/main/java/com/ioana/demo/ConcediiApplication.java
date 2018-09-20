@@ -48,9 +48,10 @@ public class ConcediiApplication {
 		// STEP8- this default user is added to the h2 db (in memory stored db)
 		// step8-ALTERNATIVA- add default user to db
 		if (repo.count() == 0) {
-			service.save(new User("user", // username
-					"ioana", // password
-					Arrays.asList(new Role("ROLE_EMPLOYEE"), new Role("ROLE_ANOTHER"))));
+			User user  = new User("user", // username
+					"ioana", new Role ("ROLE_EMPLOYEE")); // password
+			
+			service.save(user);//automatically adds a new user and a new role
 
 		}
 		// => STEP 4: add user repo interface implemented from jpa- find the user by

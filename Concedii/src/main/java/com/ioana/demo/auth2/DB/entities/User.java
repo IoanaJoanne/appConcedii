@@ -1,18 +1,24 @@
 package com.ioana.demo.auth2.DB.entities;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 //THIS IS STEP 5
 @Entity
+@Table (name = "Users")
 public class User implements Serializable{
+	// why implements serializable?? 
+	/**
+	 * 
+	 */
+	
 	//cele 2 tabele modeleaza relatia user-role dintre tabelele din baza de date
 	@Id
 	@GeneratedValue
@@ -20,16 +26,28 @@ public class User implements Serializable{
 	private String username;
 	private String password;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	//fara fetch si cascade nu merge
-	//a user can have multiple roles
-	//a specific role is assigned to only one user
-	private List<Role> roles; //=> THIS IS STEP 6
+	// fetch = FetchType.EAGER, cascade = CascadeType.ALL pt atributul colectiei 
+	
+	
+	@ManyToOne(cascade = CascadeType.PERSIST) //cascade was necessary here, otherwise error
+	@JoinColumn (name = "role_id") //specifies the fk inside the users table- the name of the column
+	//the name of the column doesn't have to correspond with the name of the id attribute inside the role class 
+	private Role role; //=> THIS IS STEP 6
 	
     public User()
     {
     		
     }
+
+
+	public Role getRole() {
+		return role;
+	}
+
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 
 	public String getUsername() {
@@ -48,20 +66,22 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
-	}
+	
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
-
-	public User(String username, String password, List<Role> roles) {
+	public User(String username, String password, Role role) {
 		super();
 		
 		this.username = username;
 		this.password = password;
-		this.roles = roles;
+		this. role = role;
+		
+	}
+
+
+	public User(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
 	}
 
 

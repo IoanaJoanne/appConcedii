@@ -90,7 +90,7 @@ public class MyRESTController {
 		}
 		else {
 			
-			userService.save(new User(username, password, Arrays.asList(new Role("ROLE_EMPLOYEE"))));
+			userService.save(new User(username, password));
 			
 			return "new employee user has been registered";
 		}

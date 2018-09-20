@@ -20,15 +20,13 @@ public class CustomUserDetails implements UserDetails{
 	private static final long serialVersionUID = 2526893992938111348L;
 	//se afla in legatura cu datele care sunt verificate la autorizarea userului prin mecanismul de password,
 	//adica: user credentials: username and password si autoritatea userului
-	//authorities asociate unui user: fiecare valoare individuala e formata din ROLE_ROLEVALUE,
-	//ROLE_VALUE fiind defapt role din bd asociat userului=> legatura cu cls Role si User
-	//username si password (user credentials) sunt cele stocate in bd pt user => legatura cu cls User
-	
+	//authorities asociate unui user
+	//custom user details preia de la cls role doar atributele care sunt strict folosite de spring security, nu e interesat de alte atribute precum (date of birth, age, email etc) care pot aparea in cls user
 	//=> atributele cls CustomUserDetails vor fi:
 	
 	private String username;
 	private String password;
-	private Collection <? extends GrantedAuthority> authorities;
+	private Collection<? extends GrantedAuthority> authorities;
 	
 	
 	public CustomUserDetails(User user)
@@ -38,26 +36,24 @@ public class CustomUserDetails implements UserDetails{
 		this.username = user.getUsername();
 		this.password = user.getPassword();
 		
-		List<GrantedAuthority> auths = new ArrayList<>();
-		for (Role role : user.getRoles())
-		{
-			
-			//dc cumva in bd nu erau trecute cu masjuscule, le transform acuma
-			String name = role.getName();
+		//dc cumva in bd nu erau trecute cu masjuscule, le transform acuma
+			String name = user.getRole().getName();
 			name = name.toUpperCase();
 			//dc cumva in bd nu am trecut rolurile sa inceapa cu ROLE_, le transform acum
 			 if (!name.startsWith("ROLE_"))
 	                name = "ROLE_" + name;
-			auths.add(new SimpleGrantedAuthority(name));
+			
 			//am facut transformarile pt ca 
 			//role.getName tre sa fie de  forma ROLE_MY_ClIENT_TYPE_1 (argumentul constructorului tre intotdeauna sa fie uppercase si sa inceapa cu  prefix ROLE_)
-		}
+	
+			 List<SimpleGrantedAuthority> auths = new ArrayList<>();
+		auths.add(new SimpleGrantedAuthority(name));
 		this.authorities = auths;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
+		// trebuie sa ma ca atribut al cls o lista de autoritati ciar dc un user eu am stabilt sa aiba un sg rol pt ca colectia de autoritati - metoda get o mosteneste din user details
 		return this.authorities;
 	}
 
