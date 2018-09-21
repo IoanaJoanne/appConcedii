@@ -1,6 +1,5 @@
 package com.ioana.demo.auth2.DB.entities;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,8 @@ import javax.persistence.Table;
 //THIS IS STEP 6
 @Entity
 @Table (name = "Roles")
-public class Role implements Serializable{
+public class Role {
+	// aveam implements serializable dc vroiam ca ob sa fie serializate intr-un ob de tip json
 	
 	@Id
 	@GeneratedValue

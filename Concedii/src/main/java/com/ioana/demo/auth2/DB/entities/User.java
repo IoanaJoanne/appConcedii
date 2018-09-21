@@ -1,7 +1,5 @@
 package com.ioana.demo.auth2.DB.entities;
 
-import java.io.Serializable;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,11 +11,9 @@ import javax.persistence.Table;
 //THIS IS STEP 5
 @Entity
 @Table (name = "Users")
-public class User implements Serializable{
-	// why implements serializable?? 
-	/**
-	 * 
-	 */
+public class User {
+	// aveam implements serializable dc vroiam ca ob sa fie serializate intr-un ob de tip json
+   //in cazul in care in rest api in requets body primeam ob de tip json
 	
 	//cele 2 tabele modeleaza relatia user-role dintre tabelele din baza de date
 	@Id

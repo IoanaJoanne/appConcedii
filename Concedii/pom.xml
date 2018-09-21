@@ -45,7 +45,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-			<version>2.0.4.RELEASE</version>
 		</dependency>
 
 
@@ -55,14 +54,14 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-			<version>2.0.4.RELEASE</version>
 		</dependency>
 		<!-- for data jpa -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!-- in-memory database- dc nu adaug asta, doar cu jpa nu merge app-ul 
+		<!-- by default, spring-bbo-starter joa are ca implementare jpa pe hibernate -->
+		<!-- h2 e in-memory database- dc nu adaug asta, doar cu jpa nu merge app-ul 
 			sa porneasca -->
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -77,7 +76,7 @@
 			<version>2.1.0.RELEASE</version>
 		</dependency>
 
-	<!-- needed for json parsing -->
+		<!-- needed for json parsing -->
 
 		<dependency>
 			<groupId>org.json</groupId>
@@ -85,14 +84,15 @@
 			<version>20080701</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 
-
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
 	</dependencies>
-
-
-
-
 
 
 	<build>

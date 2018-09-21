@@ -1,8 +1,8 @@
 package com.ioana.demo.controllers;
 
+import java.net.URI;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -12,17 +12,22 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import com.ioana.demo.auth2.DB.entities.Role;
 import com.ioana.demo.auth2.DB.entities.User;
 import com.ioana.demo.auth2.DB.services.MyUserService;
 import com.ioana.demo.models.Employee;
@@ -60,7 +65,10 @@ public class MyRESTController {
 	// spring REST
 	
 	//VARIANTA 2- TRIMIT ACCESS TOKEN CA PARAMETRU PE REQUEST de tip post
-	@RequestMapping(value = "/signoutOfAcc", method = RequestMethod.POST)
+	
+	@RequestMapping(value = "/signoutOfAcc", method = RequestMethod.POST, consumes = "application/json")
+//ii impun sa nu intre in metoda sa inceapa sa execute decat dc are un input de tip json- consumes e necesar
+	@ResponseStatus (HttpStatus.OK)
 	public String signout(@RequestBody String access_token) throws JSONException {
 		//pe request body am ce am transmis ca date pe requestul de tip post, adica am transmis tokenul de access
 		//am ales metoda de tip post ca sa nu transmit tokenul ca parametru in url sa fie vizibil
@@ -76,42 +84,53 @@ public class MyRESTController {
 		return "You have been successfully logged out of your account";
 
 	}
-	@RequestMapping(value = "/newUser", method = RequestMethod.POST)
-	public String register(@RequestBody String accInfo) throws JSONException {
-		
+	@RequestMapping(value = "/newUser", method = RequestMethod.POST, consumes = "application/json")
+	//consumes e esential ca sa nu mi execute metoda decat dc primesc input json pt ca logica din metoda e facuta pt un input te tip json; pt altfel de input crapa si mi da internal server error
+	public ResponseEntity<String> register(@RequestBody String accInfo) throws JSONException {
+		// inside <> i specify the type of body
 		System.out.println(accInfo);
 		JSONObject myjson = new JSONObject(accInfo);
 		String username = myjson.getString("username");
 		String password = myjson.getString("password");
-		
+		HttpHeaders httpHeaders = new HttpHeaders();
+		ResponseEntity<String> responseEntity = null;
+		String body  = null;
 		 if  (userService.findByUsername(username) != null) {
-			 return "username already taken by another user";
-			
+			 body =  "username already taken by another user";
+			 responseEntity = new ResponseEntity<String>(body, httpHeaders, HttpStatus.BAD_REQUEST);
+			 //response entity are in componenta body, hhtp headers si http status
+	//deci un response body, the response headers and the response status
+			 
+			 //dc am ales sa folosesc response entity- pt uri location- dc imi salveaza user-ul, in response imi trimite si locatia-url ul la care pot sa accesez resursa tocmai creata
+	//dc nu am nevoie sa setez uri location, pot sa renunt la response entity si sa folosesc doar adnotarea @ResponseStatus
 		}
 		else {
 			
 			userService.save(new User(username, password));
 			
-			return "new employee user has been registered";
+			body =  "new employee user has been registered";
+			responseEntity = new ResponseEntity<String>(body, httpHeaders, HttpStatus.CREATED);
+			URI location = null;
+			UriComponentsBuilder builder =  UriComponentsBuilder.fromPath("/employeeAcc/"+username);
+			UriComponents components = builder.build();
+			location = components.toUri();
+			httpHeaders.setLocation(location);
 		}
+		return responseEntity;
 
 	}
-	@RequestMapping(value = "/companyLeaves", method = RequestMethod.GET)
+	
+	
+	@RequestMapping(value = "/companyLeaves", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	// sau puteam sa zic produces = "application/json"
+	//produces nu e neaparat necesar- poate fi omis
+	@ResponseStatus(HttpStatus.OK)
 	public List<LeaveRequest> showLeavesCompanyWide() {
 		
 		return lista;
 
 	}
 
-	@RequestMapping(value = "/account/employee/{username}", method = RequestMethod.GET)
-	public String employeeAccPanel(@PathVariable("username") String username) {
-		return "Welcome employee " + username + " !";
-	}
-
-	@RequestMapping(value = "/account/manager/{username}", method = RequestMethod.GET)
-	public String managerAccPanel(@PathVariable("username") String username) {
-		return "Welcome manager " + username + " !";
-	}
 
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test() {
@@ -124,6 +143,7 @@ public class MyRESTController {
 	
 	//VARIANTA 1 -NU TRIMIT access token pe request ca parametru, dar extrag token din authentication
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK) //asta cu ok e oricum added by default ca response status dc se executa fara probl
 	public String signoutOfAcc(HttpServletRequest req, HttpServletResponse res, OAuth2Authentication authentication) {
 		
 		//tokenu tre sters si din backend din tokenStore
