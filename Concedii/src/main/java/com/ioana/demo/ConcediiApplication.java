@@ -1,7 +1,5 @@
 package com.ioana.demo;
 
-import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.ioana.demo.auth2.DB.entities.Role;
 import com.ioana.demo.auth2.DB.entities.User;
+import com.ioana.demo.auth2.DB.repositories.MyRoleRepository;
 import com.ioana.demo.auth2.DB.repositories.MyUserRepository;
 import com.ioana.demo.auth2.DB.services.MyUserService;
 import com.ioana.demo.auth2.passwordAuthorization.CustomUserDetails;
@@ -43,13 +42,13 @@ public class ConcediiApplication {
 	 */
 	@Autowired
 	public void AuthenticationManager(AuthenticationManagerBuilder builder, MyUserRepository repo,
-			MyUserService service) throws Exception {
+			MyUserService service, MyRoleRepository role_repo) throws Exception {
 
 		// STEP8- this default user is added to the h2 db (in memory stored db)
 		// step8-ALTERNATIVA- add default user to db
 		if (repo.count() == 0) {
 			User user  = new User("user", // username
-					"ioana", new Role ("ROLE_EMPLOYEE")); // password
+					"ioana"); // password
 			
 			service.save(user);//automatically adds a new user and a new role
 

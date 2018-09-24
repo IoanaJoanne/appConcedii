@@ -30,12 +30,12 @@ public class User {
 	//the name of the column doesn't have to correspond with the name of the id attribute inside the role class 
 	private Role role; //=> THIS IS STEP 6
 	
-    public User()
-    {
-    		
-    }
-
-
+	public User()
+	//default constructor required for signin by oauth2 security mechanism 
+	{
+		
+		
+	}
 	public Role getRole() {
 		return role;
 	}
@@ -63,17 +63,6 @@ public class User {
 	}
 
 	
-
-	public User(String username, String password, Role role) {
-		super();
-		
-		this.username = username;
-		this.password = password;
-		this. role = role;
-		
-	}
-
-
 	public User(String username, String password) {
 		super();
 		this.username = username;

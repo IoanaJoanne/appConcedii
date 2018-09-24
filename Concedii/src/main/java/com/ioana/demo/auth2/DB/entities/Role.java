@@ -1,6 +1,6 @@
 package com.ioana.demo.auth2.DB.entities;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -27,17 +27,16 @@ public class Role {
 	private List <User> users;//the mapped by property here, together with the many-to-one annotation in the other class, make this one-to-many relationship bidirectional
 	
 	public Role()
+	//default constructor required by hibernate
 	{
-		users  = new ArrayList<>();// empty arrraylist
+		
 		
 	}
-
 	public Role(String name) {
 		super();
 		this.name = name;
 		
 	}
-
 
 
 	public List<User> getUsers() {

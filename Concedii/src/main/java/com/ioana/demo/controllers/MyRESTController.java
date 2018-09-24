@@ -3,7 +3,6 @@ package com.ioana.demo.controllers;
 import java.net.URI;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,12 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.ioana.demo.DB.entities.LeaveRequest;
 import com.ioana.demo.auth2.DB.entities.User;
 import com.ioana.demo.auth2.DB.services.MyUserService;
-import com.ioana.demo.models.Employee;
-import com.ioana.demo.models.LeaveRequest;
-import com.ioana.demo.models.LeaveStatus;
-import com.ioana.demo.models.LeaveType;
 
 @RestController
 public class MyRESTController {
@@ -44,22 +40,7 @@ public class MyRESTController {
 	@Autowired
     private MyUserService userService;
 	
-	public static List<LeaveRequest> lista;
-	static {
-		lista = new ArrayList<>();
-
-		Employee e1 = new Employee("kiki");
-		Employee e2 = new Employee("miki");
-
-		LeaveRequest l1 = new LeaveRequest(LeaveType.holiday, new Date("02/09/2018"), new Date("12/09/2018"),
-				LeaveStatus.approved, e1);
-		LeaveRequest l2 = new LeaveRequest(LeaveType.sick_leave, new Date("03/09/2018"), new Date("05/09/2018"),
-				LeaveStatus.approved, e2);
-
-		lista.add(l1);
-		lista.add(l2);
-
-	}
+	
 
 
 	// spring REST
@@ -127,7 +108,8 @@ public class MyRESTController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<LeaveRequest> showLeavesCompanyWide() {
 		
-		return lista;
+		return new ArrayList<LeaveRequest>();
+		//DE MODIFICAT
 
 	}
 
