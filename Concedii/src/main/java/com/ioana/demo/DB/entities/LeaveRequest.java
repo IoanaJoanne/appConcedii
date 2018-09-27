@@ -4,14 +4,16 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table (name = "leaves")
 public class LeaveRequest {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String type;//holiday, sick leave etc
 	private Date startDate;
@@ -20,6 +22,11 @@ public class LeaveRequest {
 	
 	
 	
+	public LeaveRequest()
+	{
+		
+		
+	}
 	
 	
 	public LeaveRequest(String type, Date startDate, Date endDate, String status) {

@@ -5,7 +5,6 @@ var companyCalendar = {
 					+ '<p>Type: {{ leave.type}} </p>'
 					+ '<p>Start date: {{ leave.startDate }}</p>'
 					+ '<p>End date: {{ leave.endDate }}</p>'
-					+ '<p>Employee name: {{ leave.employee.name }}</p>'
 				+ '<hr>'
 				+'</li></ul></div>',
 		

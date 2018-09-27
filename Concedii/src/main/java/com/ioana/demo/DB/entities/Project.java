@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,19 +12,20 @@ import javax.persistence.Table;
 @Table(name = "projects")
 public class Project {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//generation type identity required pt ca priimary key sa fie auto-increment
 	private Long id;
 	private String name;
 	private String description;
 	private Date startDate;
-	private Integer duration; // in months
+	private Date endDate; // in months
 
-	public Project(String name, String description, Date startDate, Integer duration) {
+	public Project(String name, String description, Date startDate, Date endDate) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.startDate = startDate;
-		this.duration = duration;
+		this.endDate = endDate;
 	}
 
 	public String getName() {
@@ -50,12 +52,14 @@ public class Project {
 		this.startDate = startDate;
 	}
 
-	public Integer getDuration() {
-		return duration;
+	public Date getEndDate() {
+		return endDate;
 	}
 
-	public void setDuration(Integer duration) {
-		this.duration = duration;
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
+
+	
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,7 +16,7 @@ import javax.persistence.Table;
 @Table (name = "employees")
 public class Employee {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String job_title;
@@ -26,14 +27,14 @@ public class Employee {
 	private Department department; 
 	
 	@ManyToOne (cascade = CascadeType.PERSIST)
-	@JoinColumn (name = "team_id") //by default pune nullable true dc omit
+	@JoinColumn (name = "team_id", nullable = true)
 	private Team team;
 	
 	
 	//this is a unidirectional one-to-many relationship
 	@OneToMany (cascade = CascadeType.ALL)
 	//mai pun si join column ca sa nu mi faca inca un tabel in plus ca la one-to-many
-	@JoinColumn (name = "employee_id")
+	@JoinColumn (name = "employee_id", nullable = false)
 	private List<LeaveRequest> leaves;
 
 

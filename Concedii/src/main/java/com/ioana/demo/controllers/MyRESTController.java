@@ -2,7 +2,6 @@ package com.ioana.demo.controllers;
 
 import java.net.URI;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +27,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ioana.demo.DB.entities.LeaveRequest;
+import com.ioana.demo.DB.services.LeavesService;
 import com.ioana.demo.auth2.DB.entities.User;
 import com.ioana.demo.auth2.DB.services.MyUserService;
 
@@ -40,7 +40,8 @@ public class MyRESTController {
 	@Autowired
     private MyUserService userService;
 	
-	
+	@Autowired
+	private LeavesService leavesService;
 
 
 	// spring REST
@@ -108,8 +109,8 @@ public class MyRESTController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<LeaveRequest> showLeavesCompanyWide() {
 		
-		return new ArrayList<LeaveRequest>();
-		//DE MODIFICAT
+		return leavesService.findAll();
+		
 
 	}
 
